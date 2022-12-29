@@ -9,7 +9,7 @@ public class HomeTest {
     public static void main(String[] args) {
         try {
             int count = 0;
-            String source =  "message containsfg ersevwar";
+            String source =  "(message = severe and level = 900) or level = 1000";
             int page = Integer.parseInt("0");
             Page.setPaginate(page);
 

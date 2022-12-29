@@ -1,9 +1,6 @@
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.antlr.v4.runtime.tree.ParseTree;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MyVisitor extends gBaseVisitor<ObjectNode> {
 
@@ -20,6 +17,8 @@ public class MyVisitor extends gBaseVisitor<ObjectNode> {
             visit(ctx.expr());
         } else if (ctx.phrase()!=null) {
             visit(ctx.phrase());
+        } else if (ctx.group_query()!=null) {
+            visit(ctx.group_query());
         }
         return null;
 
@@ -74,7 +73,7 @@ public class MyVisitor extends gBaseVisitor<ObjectNode> {
         String left_val = ctx.left.value().getText();
         String right_attr = ctx.right.attribute().getText();
         String right_val = ctx.right.value().getText();
-        String op  = ctx.logical_op().get(0).getText();
+        String op  = ctx.logical_op().getText();
         hits = new EvalLogic(left_attr,left_val,right_attr,right_val,op).getLogic();
         return null;
     }
@@ -88,13 +87,26 @@ public class MyVisitor extends gBaseVisitor<ObjectNode> {
     }
 
     @Override
-    public ObjectNode visitLogical_op(gParser.Logical_opContext ctx) {
-        ctx.children.stream().map(m->m.toString().toUpperCase());
-        return super.visitLogical_op(ctx);
+    public ObjectNode visitGroup_query(gParser.Group_queryContext ctx) {
+        String attr1 = ctx.a1.attribute().getText();
+        String attr2 = ctx.a2.attribute().getText();
+        String attr3 = ctx.a3.attribute().getText();
+        String val1 = ctx.a1.value().getText();
+        String val2 = ctx.a1.value().getText();
+        String val3 = ctx.a2.value().getText();
+        String op1 = ctx.logical_op(0).getText().toUpperCase(); String op2 = ctx.logical_op(1).getText().toUpperCase();
+        String query = "";
+
+        if(ctx.l1!=null){
+            query+= "("+attr1+": ("+val1+") "+op1+ " "+ attr2+": ("+val2+") ) "+op1+ " "+ attr2+": ("+val2+")";
+        } else if (ctx.l2!=null) {
+            query+= attr1+": ("+val1+") "+op1+ " ("+ attr2+": ("+val2+") "+op1+ " "+ attr2+": ("+val2+")"+")";
+        }
+        hits = new EvalGroupQuery(query).getResult();
+        return null;
     }
 
     public List<Hit<ObjectNode>> result() {
         return hits;
-
     }
 }

@@ -1,7 +1,7 @@
 grammar g;
 
 
-input : phrase EOF| expr EOF| logic EOF;
+input : phrase EOF| expr EOF| logic EOF|group_query EOF;
 
 phrase : STRING;
 
@@ -12,9 +12,11 @@ expr : attribute operator value|
 range : LBRACK left = (FIELD|DIGIT) TO right = (FIELD|DIGIT) RBRACK;
 
 logic: left  = expr logical_op  right = expr
-        |expr logical_op lp expr rp
-        |lp expr logical_op  expr rp logical_op expr
-        |expr logical_op lp  expr logical_op expr rp ;
+        |expr logical_op lp expr rp;
+
+group_query: l1 = lp a1 = expr logical_op a2 = expr rp logical_op a3 = expr
+             |a1 = expr logical_op l2 = lp a2 = expr logical_op a3 = expr rp ;
+
 
 
 attribute : FIELD;

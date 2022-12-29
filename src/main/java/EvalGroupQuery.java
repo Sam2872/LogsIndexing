@@ -10,16 +10,12 @@ import java.util.List;
 public class EvalGroupQuery {
     String query;
     public EvalGroupQuery(String query) {
-        if(!query.contains("=")){
-            String temp = "*"+query+"*";
-            this.query = temp.replace("\"","");
-        }
-        else {
+
 
             this.query = query.replace("\"", " ")
                     .replace("=", ":")
                     .replace("TO", " TO ");
-        }
+
     }
 
 

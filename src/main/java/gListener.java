@@ -57,6 +57,16 @@ public interface gListener extends ParseTreeListener {
 	 */
 	void exitLogic(gParser.LogicContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link gParser#group_query}.
+	 * @param ctx the parse tree
+	 */
+	void enterGroup_query(gParser.Group_queryContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link gParser#group_query}.
+	 * @param ctx the parse tree
+	 */
+	void exitGroup_query(gParser.Group_queryContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link gParser#attribute}.
 	 * @param ctx the parse tree
 	 */

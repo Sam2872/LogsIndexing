@@ -40,6 +40,12 @@ public interface gVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLogic(gParser.LogicContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link gParser#group_query}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGroup_query(gParser.Group_queryContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link gParser#attribute}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
